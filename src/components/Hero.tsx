@@ -43,9 +43,8 @@ const Hero = () => {
               <ArrowDown className="w-5 h-5 ml-2 transition-transform group-hover:translate-y-1" />
             </Button>
             <Button 
-              variant="outline" 
+              variant="cta" 
               size="lg"
-              className="bg-card/90 backdrop-blur-sm hover:bg-card border-2 border-primary-foreground text-primary-foreground hover:text-primary"
               asChild
             >
               <a href="tel:7205550123">

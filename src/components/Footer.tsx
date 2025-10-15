@@ -54,13 +54,55 @@ const Footer = () => {
           {/* Services */}
           <div>
             <h4 className="mb-4 text-lg font-semibold">Our Services</h4>
-            <ul className="space-y-2 text-sm text-primary-foreground/80">
-              <li>Gutter Cleaning</li>
-              <li>Gutter Repair</li>
-              <li>Gutter Sealing</li>
-              <li>Gutter Guard Installation</li>
-              <li>Downspout Services</li>
-              <li>Free Inspections</li>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <button 
+                  onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-primary-foreground/80 hover:text-accent transition-colors cursor-pointer text-left"
+                >
+                  Gutter Cleaning
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-primary-foreground/80 hover:text-accent transition-colors cursor-pointer text-left"
+                >
+                  Gutter Repair
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-primary-foreground/80 hover:text-accent transition-colors cursor-pointer text-left"
+                >
+                  Gutter Sealing
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-primary-foreground/80 hover:text-accent transition-colors cursor-pointer text-left"
+                >
+                  Gutter Guard Installation
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-primary-foreground/80 hover:text-accent transition-colors cursor-pointer text-left"
+                >
+                  Downspout Services
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => document.getElementById('quote-form')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-primary-foreground/80 hover:text-accent transition-colors cursor-pointer text-left"
+                >
+                  Free Inspections
+                </button>
+              </li>
             </ul>
           </div>
         </div>
