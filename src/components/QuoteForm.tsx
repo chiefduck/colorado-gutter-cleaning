@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 import { Loader2, Check } from "lucide-react";
 import { z } from "zod";
 import {
@@ -21,31 +20,12 @@ import {
 } from "@/utils/analytics";
 
 const quoteFormSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must be less than 100 characters"),
-  phone: z
-    .string()
-    .trim()
-    .min(10, "Please enter a valid phone number")
-    .max(20, "Phone number is too long"),
-  email: z
-    .string()
-    .trim()
-    .email("Please enter a valid email address")
-    .max(255, "Email must be less than 255 characters"),
-  address: z
-    .string()
-    .trim()
-    .min(5, "Please enter a complete address")
-    .max(200, "Address must be less than 200 characters"),
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  phone: z.string().trim().min(10, "Please enter a valid phone number").max(20),
+  email: z.string().trim().email("Please enter a valid email address").max(255),
+  address: z.string().trim().min(5, "Please enter a complete address").max(200),
   service: z.string().min(1, "Please select a service"),
-  message: z
-    .string()
-    .max(1000, "Message must be less than 1000 characters")
-    .optional(),
+  message: z.string().max(1000).optional(),
 });
 
 const QuoteForm = () => {
@@ -65,7 +45,6 @@ const QuoteForm = () => {
       },
       { threshold: 0.5 }
     );
-
     const formElement = document.getElementById("quote-form");
     if (formElement) observer.observe(formElement);
     return () => observer.disconnect();
@@ -101,13 +80,12 @@ const QuoteForm = () => {
     if (value) validateField(name, value);
   };
 
+  // ✅ UPDATED handleSubmit — sends to Make webhook
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
+    const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get("name") as string,
       phone: formData.get("phone") as string,
@@ -118,30 +96,35 @@ const QuoteForm = () => {
     };
 
     try {
+      // Validate with Zod
       quoteFormSchema.parse(data);
+
+      // Track successful submission
       trackFormSubmit(data.service);
 
-      // ✅ Submit the form to Netlify
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          "form-name": "quote",
-          ...Object.fromEntries(formData),
-        }).toString(),
+      // ✅ Send data to Make webhook
+      const response = await fetch(
+        "https://eku3fi49abq79t78pa0e9hqr2r4js8a9@hook.us2.make.com",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to submit form");
+
+      // Success toast + redirect
+      toast({
+        title: "Quote Request Received!",
+        description: "We'll contact you within the hour.",
       });
 
-      if (response.ok) {
-        toast({
-          title: "Quote Request Received!",
-          description: "We'll contact you within the hour.",
-        });
-        form.reset();
-        setValidatedFields({});
-        window.location.href = "/thank-you";
-      } else {
-        throw new Error("Form submission failed");
-      }
+      e.currentTarget.reset();
+      setValidatedFields({});
+      window.location.href = "/thank-you";
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {};
@@ -183,24 +166,7 @@ const QuoteForm = () => {
           </div>
 
           <div className="p-8 bg-card rounded-2xl shadow-card animate-scale-in md:p-10">
-            <form
-              name="quote"
-              method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              onSubmit={handleSubmit}
-              action="/thank-you"
-              className="space-y-6"
-            >
-              {/* Hidden fields required by Netlify */}
-              <input type="hidden" name="form-name" value="quote" />
-              <p className="hidden">
-                <label>
-                  Don’t fill this out if you’re human:{" "}
-                  <input name="bot-field" />
-                </label>
-              </p>
-
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name *</Label>
