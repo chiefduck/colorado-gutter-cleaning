@@ -61,7 +61,7 @@ const ThankYou = () => {
           {/* Primary CTAs */}
           <div className="flex flex-col gap-4 mb-12 sm:flex-row sm:justify-center animate-fade-in-up" style={{ animationDelay: '200ms' }}>
             <Button variant="hero" size="lg" asChild className="shadow-xl">
-              <a href="tel:7205550123">
+              <a href="tel:7209179308">
                 <Phone className="w-5 h-5 mr-2" />
                 Call Now for Faster Service
               </a>
@@ -131,7 +131,7 @@ const ThankYou = () => {
               Need Immediate Assistance?
             </p>
             <p className="text-sm text-muted-foreground">
-              For urgent gutter emergencies, call us directly at <a href="tel:7205550123" className="font-semibold text-accent hover:underline">(720) 555-0123</a>
+              For urgent gutter emergencies, call us directly at <a href="tel:7209179308" className="font-semibold text-accent hover:underline">(720) 917-9308</a>
             </p>
           </div>
         </div>

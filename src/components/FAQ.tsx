@@ -73,10 +73,10 @@ const FAQ = () => {
               Still have questions? We're here to help!
             </p>
             <a
-              href="tel:7205550123"
+              href="tel:7209179308"
               className="inline-flex items-center gap-2 text-lg font-semibold text-primary hover:text-accent transition-colors"
             >
-              Call us at (720) 555-0123
+              Call us at (720) 917-9308
             </a>
           </div>
         </div>

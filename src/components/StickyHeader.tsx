@@ -56,7 +56,7 @@ const StickyHeader = () => {
               asChild
               data-track="sticky-header-call"
             >
-              <a href="tel:7205550123">
+              <a href="tel:7209179308">
                 <Phone className="w-4 h-4 sm:mr-2" />
                 <span className="hidden sm:inline">Call Now</span>
               </a>

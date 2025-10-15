@@ -22,8 +22,8 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <a href="tel:7205550123" className="hover:text-accent transition-colors">
-                  (720) 555-0123
+                <a href="tel:720917-9308" className="hover:text-accent transition-colors">
+                (720) 917-9308
                 </a>
               </li>
               <li className="flex items-start gap-2">
@@ -129,7 +129,7 @@ const Footer = () => {
               >
                 Terms of Service
               </Link>
-              <span className="text-primary-foreground/40">|</span>
+             {/* <span className="text-primary-foreground/40">|</span>
               <a
                 href="https://facebook.com"
                 target="_blank"
@@ -137,8 +137,8 @@ const Footer = () => {
                 className="transition-colors hover:text-accent"
                 aria-label="Visit our Facebook page"
               >
-                <Facebook className="w-5 h-5" />
-              </a>
+                <Facebook className="w-5 h-5" /> 
+              </a> */}
             </div>
           </div>
         </div>

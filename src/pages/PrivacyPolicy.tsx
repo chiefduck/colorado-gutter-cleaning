@@ -99,7 +99,7 @@ const PrivacyPolicy = () => {
               </p>
               <ul className="list-disc pl-6 text-muted-foreground space-y-2">
                 <li>Replying STOP to any text message we send you</li>
-                <li>Calling us at (720) 555-0123 to request removal</li>
+                <li>Calling us at (720) 917-9308 to request removal</li>
                 <li>Emailing us at info@coloradoguttercleaning.co</li>
               </ul>
             </section>
@@ -137,7 +137,7 @@ const PrivacyPolicy = () => {
                 <li>Object to processing of your personal information</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
-                To exercise any of these rights, please contact us at info@coloradoguttercleaning.co or call (720) 555-0123.
+                To exercise any of these rights, please contact us at info@coloradoguttercleaning.co or call (720) 917-9308.
               </p>
             </section>
 
@@ -177,7 +177,7 @@ const PrivacyPolicy = () => {
               <div className="bg-card p-6 rounded-xl border-2 border-border">
                 <p className="font-semibold text-card-foreground mb-2">Colorado Gutter Cleaning</p>
                 <p className="text-muted-foreground">Email: info@coloradoguttercleaning.co</p>
-                <p className="text-muted-foreground">Phone: (720) 555-0123</p>
+                <p className="text-muted-foreground">Phone: (720) 917-9308</p>
                 <p className="text-muted-foreground">Address: Denver, CO 80202</p>
               </div>
             </section>

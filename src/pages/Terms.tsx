@@ -73,7 +73,7 @@ const Terms = () => {
 
               <h3 className="text-xl font-semibold mb-3 text-card-foreground">Cancellation Policy</h3>
               <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                <li>You may cancel or reschedule your appointment at any time by calling (720) 555-0123</li>
+                <li>You may cancel or reschedule your appointment at any time by calling (720) 917-9308</li>
                 <li>We request at least 24 hours notice for cancellations when possible</li>
                 <li>No cancellation fees apply to standard service appointments</li>
               </ul>
@@ -141,7 +141,7 @@ const Terms = () => {
                 <li>Promotional offers and discounts (with your consent)</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Message frequency varies. Message and data rates may apply. You can opt out at any time by replying STOP to any message or contacting us at (720) 555-0123. For help, reply HELP.
+                Message frequency varies. Message and data rates may apply. You can opt out at any time by replying STOP to any message or contacting us at (720) 917-9308. For help, reply HELP.
               </p>
             </section>
 
@@ -208,7 +208,7 @@ const Terms = () => {
               <div className="bg-card p-6 rounded-xl border-2 border-border">
                 <p className="font-semibold text-card-foreground mb-2">Colorado Gutter Cleaning</p>
                 <p className="text-muted-foreground">Email: info@coloradoguttercleaning.co</p>
-                <p className="text-muted-foreground">Phone: (720) 555-0123</p>
+                <p className="text-muted-foreground">Phone: (720) 917-9308</p>
                 <p className="text-muted-foreground">Address: Denver, CO 80202</p>
               </div>
             </section>
