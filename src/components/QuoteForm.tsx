@@ -28,7 +28,7 @@ const QuoteForm = () => {
 
     toast({
       title: "Quote Request Received!",
-      description: "We'll contact you within 24 hours.",
+      description: "We'll contact you within the hour.",
     });
 
     setIsSubmitting(false);
