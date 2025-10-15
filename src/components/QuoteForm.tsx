@@ -83,9 +83,11 @@ const QuoteForm = () => {
   // ✅ UPDATED handleSubmit — sends to Make webhook
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.persist(); // ✅ keep access to event after async calls
     setIsSubmitting(true);
-
-    const formData = new FormData(e.currentTarget);
+  
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const data = {
       name: formData.get("name") as string,
       phone: formData.get("phone") as string,
@@ -94,37 +96,38 @@ const QuoteForm = () => {
       service: formData.get("service") as string,
       message: formData.get("message") as string,
     };
-
+  
     try {
-      // Validate with Zod
       quoteFormSchema.parse(data);
-
-      // Track successful submission
       trackFormSubmit(data.service);
-
-      // ✅ Send data to Make webhook
+  
       const response = await fetch(
-        "https://hook.us2.make.com/rmu8eaypyldedj8zrhwra73h8k28mv32",
+        "https://hook.us2.make.com/147rxprnwumtirhadgr9uufejj1ggwgg",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         }
       );
-
-      if (!response.ok) throw new Error("Failed to submit form");
-
-      // Success toast + redirect
+  
+      // ✅ Treat both 200 and 204 as success
+      if (response.status !== 200 && response.status !== 204) {
+        throw new Error(`Webhook submission failed: ${response.status}`);
+      }
+  
       toast({
         title: "Quote Request Received!",
         description: "We'll contact you within the hour.",
       });
-
-      e.currentTarget.reset();
+  
+      // ✅ Reset form safely
+      form.reset();
       setValidatedFields({});
-      window.location.href = "/thank-you";
+  
+      // Smooth redirect
+      setTimeout(() => {
+        window.location.href = "/thank-you";
+      }, 800);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {};
@@ -139,6 +142,7 @@ const QuoteForm = () => {
           variant: "destructive",
         });
       } else {
+        console.error("Form submission error:", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later.",
@@ -149,6 +153,8 @@ const QuoteForm = () => {
       setIsSubmitting(false);
     }
   };
+  
+  
 
   return (
     <section id="quote-form" className="py-20 bg-gradient-section">
