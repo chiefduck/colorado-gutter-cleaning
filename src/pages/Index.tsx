@@ -7,6 +7,7 @@ import Testimonials from "@/components/Testimonials";
 import SpecialOffer from "@/components/SpecialOffer";
 import Footer from "@/components/Footer";
 import StickyContact from "@/components/StickyContact";
+import ExitIntentPopup from "@/components/ExitIntentPopup";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <SpecialOffer />
       <Footer />
       <StickyContact />
+      <ExitIntentPopup />
     </div>
   );
 };

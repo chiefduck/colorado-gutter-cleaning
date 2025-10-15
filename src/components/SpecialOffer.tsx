@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Clock } from "lucide-react";
+import { useCountdown } from "@/hooks/useCountdown";
 
 const SpecialOffer = () => {
+  // Set target date to end of October
+  const targetDate = new Date(new Date().getFullYear(), 9, 31, 23, 59, 59); // Month is 0-indexed, so 9 = October
+  const timeLeft = useCountdown(targetDate);
+  
   const scrollToForm = () => {
     const formSection = document.getElementById('quote-form');
     formSection?.scrollIntoView({ behavior: 'smooth' });
@@ -23,6 +28,31 @@ const SpecialOffer = () => {
           <p className="mb-6 text-2xl font-bold text-accent md:text-3xl">
             10% Off Through October!
           </p>
+
+          {/* Countdown Timer */}
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <Clock className="w-5 h-5 text-accent" />
+            <p className="text-sm font-semibold text-primary-foreground/90">Offer ends in:</p>
+          </div>
+          
+          <div className="flex justify-center gap-4 mb-8">
+            <div className="flex flex-col items-center bg-card/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[70px]">
+              <span className="text-3xl font-bold text-accent">{timeLeft.days}</span>
+              <span className="text-xs text-primary-foreground/80">Days</span>
+            </div>
+            <div className="flex flex-col items-center bg-card/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[70px]">
+              <span className="text-3xl font-bold text-accent">{timeLeft.hours}</span>
+              <span className="text-xs text-primary-foreground/80">Hours</span>
+            </div>
+            <div className="flex flex-col items-center bg-card/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[70px]">
+              <span className="text-3xl font-bold text-accent">{timeLeft.minutes}</span>
+              <span className="text-xs text-primary-foreground/80">Minutes</span>
+            </div>
+            <div className="flex flex-col items-center bg-card/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[70px]">
+              <span className="text-3xl font-bold text-accent">{timeLeft.seconds}</span>
+              <span className="text-xs text-primary-foreground/80">Seconds</span>
+            </div>
+          </div>
           
           <p className="mb-8 text-lg text-primary-foreground/90 max-w-2xl mx-auto">
             Get your gutters ready for winter with our fall special. Protect your home from ice dams, 
