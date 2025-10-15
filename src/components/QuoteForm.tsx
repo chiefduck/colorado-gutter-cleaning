@@ -104,7 +104,7 @@ const QuoteForm = () => {
 
       // ✅ Send data to Make webhook
       const response = await fetch(
-        "https://eku3fi49abq79t78pa0e9hqr2r4js8a9@hook.us2.make.com",
+        "https://hook.us2.make.com/rmu8eaypyldedj8zrhwra73h8k28mv32",
         {
           method: "POST",
           headers: {
