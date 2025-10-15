@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, Facebook } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -115,6 +116,20 @@ const Footer = () => {
             </p>
             
             <div className="flex items-center gap-4">
+              <Link 
+                to="/privacy" 
+                className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <span className="text-primary-foreground/40">|</span>
+              <Link 
+                to="/terms" 
+                className="text-sm text-primary-foreground/70 hover:text-accent transition-colors"
+              >
+                Terms of Service
+              </Link>
+              <span className="text-primary-foreground/40">|</span>
               <a
                 href="https://facebook.com"
                 target="_blank"

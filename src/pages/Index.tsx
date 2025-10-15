@@ -5,6 +5,7 @@ import Services from "@/components/Services";
 import QuoteForm from "@/components/QuoteForm";
 import Testimonials from "@/components/Testimonials";
 import SpecialOffer from "@/components/SpecialOffer";
+import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import StickyContact from "@/components/StickyContact";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
@@ -26,6 +27,7 @@ const Index = () => {
       <QuoteForm />
       <Testimonials />
       <SpecialOffer />
+      <FAQ />
       <Footer />
       <StickyHeader />
       <StickyContact />
