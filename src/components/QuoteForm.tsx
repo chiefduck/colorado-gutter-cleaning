@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { Loader2, Check } from "lucide-react";
 import { z } from "zod";
+import { trackFormView, trackFormSubmit, trackFormError } from "@/utils/analytics";
 
 const quoteFormSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
@@ -33,11 +34,12 @@ const QuoteForm = () => {
   const navigate = useNavigate();
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-focus first field when form comes into view
+  // Track form view when it comes into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          trackFormView();
           setTimeout(() => nameInputRef.current?.focus(), 300);
         }
       },
@@ -93,6 +95,9 @@ const QuoteForm = () => {
     try {
       quoteFormSchema.parse(data);
       
+      // Track successful submission
+      trackFormSubmit(data.service);
+      
       // Simulate form submission
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -111,6 +116,9 @@ const QuoteForm = () => {
           }
         });
         setErrors(newErrors);
+        
+        // Track form errors
+        trackFormError(error.errors.map(e => e.message).join(', '));
         
         toast({
           title: "Please check your form",
@@ -246,6 +254,7 @@ const QuoteForm = () => {
                 size="lg"
                 className="w-full"
                 disabled={isSubmitting}
+                data-track="quote-form-submit"
               >
                 {isSubmitting ? (
                   <>

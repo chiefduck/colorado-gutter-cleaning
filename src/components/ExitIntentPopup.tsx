@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X, Sparkles, Phone } from "lucide-react";
+import { trackExitIntentShown, trackExitIntentConverted } from "@/utils/analytics";
 
 const ExitIntentPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,7 @@ const ExitIntentPopup = () => {
       if (e.clientY <= 0 && !hasShown) {
         setIsOpen(true);
         setHasShown(true);
+        trackExitIntentShown();
       }
     };
 
@@ -29,8 +31,13 @@ const ExitIntentPopup = () => {
 
   const scrollToForm = () => {
     setIsOpen(false);
+    trackExitIntentConverted('form');
     const formSection = document.getElementById('quote-form');
     formSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handlePhoneClick = () => {
+    trackExitIntentConverted('phone');
   };
 
   return (
@@ -71,6 +78,7 @@ const ExitIntentPopup = () => {
             size="lg"
             className="w-full"
             asChild
+            onClick={handlePhoneClick}
           >
             <a href="tel:7205550123">
               <Phone className="w-5 h-5 mr-2" />

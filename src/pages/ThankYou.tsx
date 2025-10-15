@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Home, Phone } from "lucide-react";
 import { useEffect } from "react";
+import { trackPageView } from "@/utils/analytics";
 
 const ThankYou = () => {
   useEffect(() => {
+    // Track page view
+    trackPageView('/thank-you');
+    
     // Update meta tags
     document.title = "Thank You | Colorado Gutter Cleaning";
     const metaDescription = document.querySelector('meta[name="description"]');

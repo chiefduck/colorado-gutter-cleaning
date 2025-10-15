@@ -8,8 +8,15 @@ import SpecialOffer from "@/components/SpecialOffer";
 import Footer from "@/components/Footer";
 import StickyContact from "@/components/StickyContact";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
+import StickyHeader from "@/components/StickyHeader";
+import { useEffect } from "react";
+import { trackPageView } from "@/utils/analytics";
 
 const Index = () => {
+  useEffect(() => {
+    trackPageView('/');
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Hero />
@@ -20,6 +27,7 @@ const Index = () => {
       <Testimonials />
       <SpecialOffer />
       <Footer />
+      <StickyHeader />
       <StickyContact />
       <ExitIntentPopup />
     </div>
