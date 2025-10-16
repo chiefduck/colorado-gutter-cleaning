@@ -1,24 +1,38 @@
 exports.handler = async (event) => {
     try {
       const payload = JSON.parse(event.body || "{}");
-      console.log("📞 Bland Event:", payload.type);
-      console.log("🧠 Data:", payload.data);
+      console.log("📞 Raw Payload:", payload);
   
-      if (payload.type === "call.ended") {
-        const phone = payload.data?.phone_number || "Unknown";
-        const summary = payload.data?.summary || "No summary provided";
-        const status = payload.data?.status || "completed";
-        const duration = payload.data?.duration || 0;
-        const transcript = payload.data?.transcription_text || "";
+      // Support both 'type' and 'event' keys from Bland
+      const eventType = payload.type || payload.event || "unknown";
+      const data = payload.data || payload.call || payload || {};
   
-        const makeWebhook = "https://hook.us2.make.com/wf2ccxblnm27h6qa4x5goly0m7xq7gmk";
+      console.log("📞 Bland Event:", eventType);
+      console.log("🧠 Data:", data);
+  
+      if (eventType === "call.ended" || data.status === "completed") {
+        const phone = data.phone_number || data.phone || "Unknown";
+        const summary = data.summary || "No summary provided";
+        const status = data.status || "completed";
+        const duration = data.duration || 0;
+        const transcript =
+          data.transcription_text || data.transcript || "";
+  
+        const makeWebhook =
+          "https://hook.us2.make.com/wf2ccxblnm27h6qa4x5goly0m7xq7gmk";
   
         console.log("🚀 Forwarding to Make:", makeWebhook);
   
         const response = await fetch(makeWebhook, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone, summary, status, duration, transcript }),
+          body: JSON.stringify({
+            phone,
+            summary,
+            status,
+            duration,
+            transcript,
+          }),
         });
   
         console.log("✅ Make response status:", response.status);
@@ -33,4 +47,9 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: "Invalid JSON" };
     }
   };
+  
+  
+
+
+
   
