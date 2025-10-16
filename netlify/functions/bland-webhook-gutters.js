@@ -5,16 +5,20 @@ exports.handler = async (event) => {
       console.log("📞 Bland Event:", payload.type);
       console.log("🧠 Data:", payload.data);
   
-      const phone = payload.data?.phone_number || "Unknown";
-      const summary = payload.data?.summary || "No summary";
-      const transcript = payload.data?.transcription_text || "";
+      if (payload.type === "call.ended") {
+        const phone = payload.data?.phone_number || "Unknown";
+        const summary = payload.data?.summary || "No summary provided";
+        const status = payload.data?.status || "completed";
+        const duration = payload.data?.duration || 0;
+        const transcript = payload.data?.transcription_text || "";
   
-      // Example: forward to your Make webhook for Sheets logging
-      await fetch("https://hook.us2.make.com/YOUR_MAKE_WEBHOOK_ID", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, summary, transcript })
-      });
+        // Forward this data to Make
+        await fetch("https://hook.us2.make.com/3bmt81lb6iavo6obh7nvmir22cudn43o", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone, summary, status, duration, transcript })
+        });
+      }
   
       return {
         statusCode: 200,
