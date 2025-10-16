@@ -89,20 +89,22 @@ const QuoteForm = () => {
     const form = e.currentTarget;
     const formData = new FormData(form);
     // Normalize phone number: remove non-digits, add +1 if missing
-      let rawPhone = (formData.get("phone") as string).replace(/\D/g, "");
-      if (!rawPhone.startsWith("1")) {
-        rawPhone = "1" + rawPhone;
-      }
-      const formattedPhone = "+" + rawPhone;
+    let rawPhone = (formData.get("phone") as string).replace(/\D/g, "");
+    if (!rawPhone.startsWith("1")) {
+      rawPhone = "1" + rawPhone;
+    }
+    const formattedPhone = "+" + rawPhone;
+    
 
-      const data = {
-        name: formData.get("name") as string,
-        phone: formattedPhone, // ✅ send +1 format to Make
-        email: formData.get("email") as string,
-        address: formData.get("address") as string,
-        service: formData.get("service") as string,
-        message: formData.get("message") as string,
-      };
+    const data = {
+      name: formData.get("name") as string,
+      phone: formattedPhone,
+      email: formData.get("email") as string,
+      address: formData.get("address") as string,
+      service: formData.get("service") as string,
+      message: formData.get("message") as string,
+    };
+    
 
   
     try {
