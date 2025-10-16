@@ -11,7 +11,7 @@ exports.handler = async (event) => {
         const duration = payload.data?.duration || 0;
         const transcript = payload.data?.transcription_text || "";
   
-        const makeWebhook = "https://hook.us2.make.com/3bmt81lb6iavo6obh7nvmir22cudn43o";
+        const makeWebhook = "https://hook.us2.make.com/wf2ccxblnm27h6qa4x5goly0m7xq7gmk";
   
         console.log("🚀 Forwarding to Make:", makeWebhook);
   
