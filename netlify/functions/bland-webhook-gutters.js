@@ -1,4 +1,3 @@
-// /netlify/functions/bland-webhook-gutters.js
 exports.handler = async (event) => {
     try {
       const payload = JSON.parse(event.body || "{}");
@@ -12,17 +11,22 @@ exports.handler = async (event) => {
         const duration = payload.data?.duration || 0;
         const transcript = payload.data?.transcription_text || "";
   
-        // Forward this data to Make
-        await fetch("https://hook.us2.make.com/3bmt81lb6iavo6obh7nvmir22cudn43o", {
+        const makeWebhook = "https://hook.us2.make.com/3bmt81lb6iavo6obh7nvmir22cudn43o";
+  
+        console.log("🚀 Forwarding to Make:", makeWebhook);
+  
+        const response = await fetch(makeWebhook, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone, summary, status, duration, transcript })
+          body: JSON.stringify({ phone, summary, status, duration, transcript }),
         });
+  
+        console.log("✅ Make response status:", response.status);
       }
   
       return {
         statusCode: 200,
-        body: JSON.stringify({ success: true })
+        body: JSON.stringify({ success: true }),
       };
     } catch (err) {
       console.error("❌ Webhook error:", err);
