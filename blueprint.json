@@ -1,0 +1,79 @@
+{
+    "name": "Prevent duplicate lead emails",
+    "modules": [
+      {
+        "id": 1,
+        "name": "Incoming Webhook",
+        "type": "hook",
+        "parameters": {
+          "label": "Gutter Quote Form",
+          "payload": {
+            "name": "{{name}}",
+            "phone": "{{phone}}",
+            "email": "{{email}}",
+            "service": "{{service}}"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "name": "Sleep",
+        "type": "sleep",
+        "parameters": {
+          "seconds": 2
+        }
+      },
+      {
+        "id": 3,
+        "name": "Get record",
+        "type": "datastore:get",
+        "parameters": {
+          "datastore": "Last_Lead_ID",
+          "key": "last"
+        }
+      },
+      {
+        "id": 4,
+        "name": "Filter – Only if new lead",
+        "type": "filter",
+        "parameters": {
+          "condition": {
+            "left": "{{1.phone}}",
+            "operator": "not_equal",
+            "right": "{{3.id}}"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "name": "Send Email",
+        "type": "email:send",
+        "parameters": {
+          "from": "leads@coloradoguttercleaning.co",
+          "to": "justin@level16media.com",
+          "subject": "New Gutter Quote – {{1.name}}",
+          "body": "Name: {{1.name}}\nPhone: {{1.phone}}\nEmail: {{1.email}}\nService: {{1.service}}"
+        }
+      },
+      {
+        "id": 6,
+        "name": "Update record",
+        "type": "datastore:update",
+        "parameters": {
+          "datastore": "Last_Lead_ID",
+          "key": "last",
+          "data": {
+            "id": "{{1.phone}}"
+          }
+        }
+      }
+    ],
+    "links": [
+      { "from_module": 1, "to_module": 2 },
+      { "from_module": 2, "to_module": 3 },
+      { "from_module": 3, "to_module": 4 },
+      { "from_module": 4, "to_module": 5 },
+      { "from_module": 5, "to_module": 6 }
+    ]
+  }
+  
