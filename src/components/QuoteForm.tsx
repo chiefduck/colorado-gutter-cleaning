@@ -112,7 +112,7 @@ const QuoteForm = () => {
       trackFormSubmit(data.service);
   
       const response = await fetch(
-        "https://hook.us2.make.com/147rxprnwumtirhadgr9uufejj1ggwgg",
+        "https://hook.us2.make.com/6qpth04eokv8vbktgykcnltjvvj6ofml",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
