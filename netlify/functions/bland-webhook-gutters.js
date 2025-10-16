@@ -1,19 +1,25 @@
 exports.handler = async (event) => {
-    try {
-      const payload = JSON.parse(event.body || "{}");
-      console.log("📞 Raw Payload:", payload);
+    console.log("🔥 Incoming Bland webhook!");
+    console.log("Headers:", event.headers);
+    console.log("Raw body:", event.body);
   
-      // Support both 'type' and 'event' keys from Bland
+    try {
+      // Try to parse the body; if it fails, we'll log the error
+      const payload = JSON.parse(event.body || "{}");
+      console.log("✅ Parsed payload:", payload);
+  
+      // Extract event type in every possible way
       const eventType = payload.type || payload.event || "unknown";
       const data = payload.data || payload.call || payload || {};
   
       console.log("📞 Bland Event:", eventType);
       console.log("🧠 Data:", data);
   
-      if (eventType === "call.ended" || data.status === "completed") {
+      // Fire only when we clearly have a phone number
+      if (data.phone_number || data.phone) {
         const phone = data.phone_number || data.phone || "Unknown";
-        const summary = data.summary || "No summary provided";
-        const status = data.status || "completed";
+        const summary = data.summary || "No summary";
+        const status = data.status || eventType || "unknown";
         const duration = data.duration || 0;
         const transcript =
           data.transcription_text || data.transcript || "";
@@ -21,7 +27,14 @@ exports.handler = async (event) => {
         const makeWebhook =
           "https://hook.us2.make.com/wf2ccxblnm27h6qa4x5goly0m7xq7gmk";
   
-        console.log("🚀 Forwarding to Make:", makeWebhook);
+        console.log("🚀 Sending to Make:", makeWebhook);
+        console.log("➡️ Payload to Make:", {
+          phone,
+          summary,
+          status,
+          duration,
+          transcript,
+        });
   
         const response = await fetch(makeWebhook, {
           method: "POST",
@@ -36,6 +49,8 @@ exports.handler = async (event) => {
         });
   
         console.log("✅ Make response status:", response.status);
+      } else {
+        console.log("⚠️ No phone number found, skipping Make call");
       }
   
       return {
@@ -43,13 +58,8 @@ exports.handler = async (event) => {
         body: JSON.stringify({ success: true }),
       };
     } catch (err) {
-      console.error("❌ Webhook error:", err);
+      console.error("❌ JSON parse or fetch error:", err);
       return { statusCode: 400, body: "Invalid JSON" };
     }
   };
-  
-  
-
-
-
   
