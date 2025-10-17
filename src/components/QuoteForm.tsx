@@ -19,6 +19,7 @@ import {
   trackFormError,
 } from "@/utils/analytics";
 
+// ✅ Validation schema
 const quoteFormSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   phone: z.string().trim().min(10, "Please enter a valid phone number").max(20),
@@ -26,6 +27,7 @@ const quoteFormSchema = z.object({
   address: z.string().trim().min(5, "Please enter a complete address").max(200),
   service: z.string().min(1, "Please select a service"),
   message: z.string().max(1000).optional(),
+  consent: z.literal("on", { errorMap: () => ({ message: "Consent required" }) }), // ✅ checkbox required
 });
 
 const QuoteForm = () => {
@@ -35,6 +37,7 @@ const QuoteForm = () => {
   const { toast } = useToast();
   const nameInputRef = useRef<HTMLInputElement>(null);
 
+  // ✅ Track form view on scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -80,21 +83,25 @@ const QuoteForm = () => {
     if (value) validateField(name, value);
   };
 
-  // ✅ UPDATED handleSubmit — sends to Make webhook
+  // ✅ Handle Submit with honeypot + consent
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    e.persist(); // ✅ keep access to event after async calls
     setIsSubmitting(true);
-  
+
     const form = e.currentTarget;
     const formData = new FormData(form);
+
+    // 🐝 Honeypot check (blocks bots)
+    if (formData.get("website")) {
+      console.warn("Spam submission blocked");
+      setIsSubmitting(false);
+      return;
+    }
+
     // Normalize phone number: remove non-digits, add +1 if missing
     let rawPhone = (formData.get("phone") as string).replace(/\D/g, "");
-    if (!rawPhone.startsWith("1")) {
-      rawPhone = "1" + rawPhone;
-    }
+    if (!rawPhone.startsWith("1")) rawPhone = "1" + rawPhone;
     const formattedPhone = "+" + rawPhone;
-    
 
     const data = {
       name: formData.get("name") as string,
@@ -103,14 +110,13 @@ const QuoteForm = () => {
       address: formData.get("address") as string,
       service: formData.get("service") as string,
       message: formData.get("message") as string,
+      consent: formData.get("consent") as string,
     };
-    
 
-  
     try {
       quoteFormSchema.parse(data);
       trackFormSubmit(data.service);
-  
+
       const response = await fetch(
         "https://hook.us2.make.com/6qpth04eokv8vbktgykcnltjvvj6ofml",
         {
@@ -119,22 +125,19 @@ const QuoteForm = () => {
           body: JSON.stringify(data),
         }
       );
-  
-      // ✅ Treat both 200 and 204 as success
+
       if (response.status !== 200 && response.status !== 204) {
         throw new Error(`Webhook submission failed: ${response.status}`);
       }
-  
+
       toast({
         title: "Quote Request Received!",
         description: "We'll contact you within the hour.",
       });
-  
-      // ✅ Reset form safely
+
       form.reset();
       setValidatedFields({});
-  
-      // Smooth redirect
+
       setTimeout(() => {
         window.location.href = "/thank-you";
       }, 800);
@@ -163,8 +166,6 @@ const QuoteForm = () => {
       setIsSubmitting(false);
     }
   };
-  
-  
 
   return (
     <section id="quote-form" className="py-20 bg-gradient-section">
@@ -183,6 +184,15 @@ const QuoteForm = () => {
 
           <div className="p-8 bg-card rounded-2xl shadow-card animate-scale-in md:p-10">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* 🐝 Honeypot Field */}
+              <input
+                type="text"
+                name="website"
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name *</Label>
@@ -290,15 +300,33 @@ const QuoteForm = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="message">
-                  Additional Details (Optional)
-                </Label>
+                <Label htmlFor="message">Additional Details (Optional)</Label>
                 <Textarea
                   id="message"
                   name="message"
                   placeholder="Tell us about your gutter needs..."
                   className="min-h-[120px] resize-none"
                 />
+              </div>
+
+              {/* ✅ Consent Checkbox */}
+              <div className="flex items-start space-x-2">
+                <input
+                  type="checkbox"
+                  id="consent"
+                  name="consent"
+                  required
+                  className="mt-1"
+                />
+                <label
+                  htmlFor="consent"
+                  className="text-xs text-muted-foreground leading-snug"
+                >
+                  I agree to receive calls, text messages, and emails from this
+                  company, including by automated technology, to the number and
+                  email I provided. Message/data rates may apply. Consent is not
+                  a condition of purchase.
+                </label>
               </div>
 
               <Button
@@ -317,11 +345,6 @@ const QuoteForm = () => {
                   "Get My Free Quote"
                 )}
               </Button>
-
-              <p className="text-xs text-center text-muted-foreground">
-                By submitting this form, you agree to be contacted regarding your
-                quote request.
-              </p>
             </form>
           </div>
         </div>
